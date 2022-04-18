@@ -1,88 +1,85 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
-using ConsoleApp15.Data;
-using ConsoleApp15.Model;
+using BlogTask.Data;
+using BlogTask.Model;
 
-namespace ConsoleApp15
+namespace BlogTask
 {
     internal class Program
     {
+        static string conString = @"Server=WIN-IVUSE4PLT5F\SQLEXPRESS;Database=Blog;Trusted_Connection=TRUE";
         static void Main(string[] args)
         {
-             string connections  = @"Server=WIN-IVUSE4PLT5F\SQLEXPRESS;Database=Futbol;Trusted_Connection=TRUE";
-            SqlConnection con = new SqlConnection(connections);
-            Console.WriteLine("Name daxil edin");
-            string Name = Console.ReadLine();
-            Console.WriteLine("HourPrice daxil edin");
-            double Price;
-            string doubleStr = Console.ReadLine();
-            double.TryParse(doubleStr, out Price);
-            while (!double.TryParse(doubleStr, out Price))
+            PostData postData = new PostData();
+            Console.WriteLine("Axtardiginiz postun id deyeri:");
+            string idStr = Console.ReadLine();
+            int id;
+
+            while (!int.TryParse(idStr, out id))
             {
-                Console.WriteLine("HourPrice daxil edin");
-                doubleStr = Console.ReadLine();
-                double.TryParse(doubleStr,out Price);
-            }
-            Console.WriteLine("Capacity daxil edin");
-            string capacityStr = Console.ReadLine();
-            int capacity;
-            int.TryParse(capacityStr,out capacity);
-            while(!int.TryParse(capacityStr,out capacity))
-            {
-                Console.WriteLine("Capacity daxil eidn");
-                capacityStr = Console.ReadLine();
-                int.TryParse(capacityStr, out capacity);
+                Console.WriteLine("Id deyerini dogru daxil edin!");
+                Console.WriteLine("Axtardiginiz postun id deyeri:");
+                idStr = Console.ReadLine();
             }
 
-            StadionData stadionData = new StadionData();
+            Post post = postData.GetPostById(id);
 
-            Stadion stadion = new Stadion()
+            if (post != null)
             {
-                Name = "AP203",
-                HourPrice = 30,
-                Capacity = 30
-            };
-            Stadion stadion1 = new Stadion()
+               Console.WriteLine($"Name: {post.Title} - Price: {post.Content}");
+            }
+            else
             {
-                Name = "AP202",
-                HourPrice = 40,
-                Capacity = 20
-            };
-            Stadion stadion2 = new Stadion()
+                Console.WriteLine($"{id} id deyerli Post yoxdur!");
+            }
+        }
+        static void ShowPosts()
+        {
+            using (SqlConnection con = new SqlConnection(conString))
             {
-                Name = "AP201",
-                HourPrice = 50,
-                Capacity = 70
-            };
+                con.Open();
+                string query = "SELECT * FROM Posts";
 
-            static void InserStadium(string connections)
+                SqlCommand cmd = new SqlCommand(query, con);
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        Console.WriteLine($"Id : {dr.GetInt32(0)} - Title: {dr.GetString(40)} - Price: {dr.GetString(20)}");
+                    }
+                }
+            }
+            static List<Post> GetAllPosts()
             {
-                using (SqlConnection con = new SqlConnection(connections))
+                List<Post> posts = new List<Post>();
+
+                using (SqlConnection con = new SqlConnection(conString))
                 {
                     con.Open();
 
-                    Console.WriteLine("Name:");
-                    string name = Console.ReadLine();
-
-                    Console.WriteLine("Price:");
-                    string price = Console.ReadLine();
-
-                    Console.WriteLine("Capacity:");
-                    string capacity = Console.ReadLine();
-
-                    string query = $"INSERT INTO Stadions (Name,HourPrice,Capacity) VALUES ('{name}',{price},{capacity})";
+                    string query = "SELECT * FROM Posts";
 
                     SqlCommand cmd = new SqlCommand(query, con);
-                    cmd.ExecuteNonQuery();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            Post post = new Post
+                            {
+                                Id = dr.GetInt32(0),
+                                Title = dr.GetString(25),
+                                Content = dr.GetString(20),
+                               
+                            };
+
+                            posts.Add(post);
+                        }
+                    }
+                    return posts;
                 }
-
             }
-
-
-
-
-
-
-        }
     }
 }
