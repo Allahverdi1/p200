@@ -1,0 +1,72 @@
+.sablon{
+    width: 800px;
+    height: auto;
+    margin: 10px 10px;
+}
+.sablon .header{
+    width: 1000px;
+    height: 100px;
+    float: left;
+    background-color: grey;
+}
+.sablon .banner{
+    width: 1000px;
+    height: 30px;
+    float: left;
+    background-color: grey;
+    margin: 10px 0;
+}
+.sablon .bolum1{
+    width: 600px;
+    height: 200px;
+    float: left;
+    background-color: grey;
+}
+.sablon .bolum2{
+    width: 600px;
+    height: 200px;
+    float: left;
+    background-color: grey;
+    margin: 10px 0;
+}
+.sablon .bolum3{
+    width: 295px;
+    height: 200px;
+    background-color: grey;
+    float: left;
+
+}
+.sablon .bolum4{
+    width: 295px;
+    height: 200px;
+    background-color: grey;
+    float: left;
+    margin: 0 10px 10px 10px;
+
+}
+.sablon .bolum5{
+    width: 295px;
+    height: 200px;
+    background-color: grey;
+    float: left;
+    margin: 0 10px 0 0;
+
+}
+.sablon .bolum6{
+    width: 295px;
+    height: 200px;
+    background-color: grey;
+    float: left;
+    margin: 0 10px 10px 0
+
+}
+.sablon .bolum7{
+    width: 1000px;
+    height: 30px;
+    float: left;
+    background-color: grey;
+    margin: 10px 0;
+}
+
+
+
